@@ -38,3 +38,10 @@ Leading zeros are the trap. `ipv4_to_int("010.0.0.1")` raises `ValueError`
 because `010` could mean decimal 10 or octal 8 depending on the caller, and
 silently choosing one produces addresses that differ between systems. Rejecting
 it is the only safe behaviour for an integer representation.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
